@@ -1,0 +1,31 @@
+<!--input.wxml-->
+<view class="section">
+<view class="section">
+
+</view>
+
+<view class="section">
+<map id="map4select"
+ longitude="{{longitude}}" latitude="{{latitude}}" 
+ markers="{{markers}}"
+ scale="15" 
+ style="width: 100%; height: 300px;
+ bindregionchange="regionchange"
+ controls="{{controls}}">
+<cover-image class="img" src="/imgs/loginoff.jpg" bindtap="loginoff"/>
+ <cover-view class="login-off">注销用户</cover-view>
+</map>
+
+</view> 
+ 
+
+<view class="section">
+<button bindtap="scan">扫码开锁</button>
+<button bindtap="openLock">Open锁</button>
+<button bindtap="closeLock">Close锁</button>
+<button bindtap="setLoading">设备管理</button>
+<text>{{text.data}}</text>
+<text>{{mytext}}</text>
+<view>{{show}}</view>  
+</view>
+</view>

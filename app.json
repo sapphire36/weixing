@@ -1,0 +1,30 @@
+{
+  "pages":[
+    "pages/login/login",
+    "pages/operate/operate",
+    "pages/logs/logs",
+    "pages/installer/installer"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#eee",
+    "navigationBarTitleText": "智能光交",
+    "navigationBarTextStyle":"red"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/operate/operate",
+        "text": "首页",
+        "iconPath": "imgs/1.png",
+        "selectedIconPath": "imgs/2.png"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "日志",
+        "iconPath": "imgs/3.png",
+        "selectedIconPath": "imgs/4.png"
+      }
+    ]
+  }
+}
