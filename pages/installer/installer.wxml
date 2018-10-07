@@ -1,49 +1,36 @@
- <view class="login-icon">
+<view class="login-icon">
   <image class="img" src="/imgs/loginoff.jpg" bindtap="loginoff">
   </image>
-
-
-<view wx:if="{{boolean==true}}">
-  <image class="login-img" src="{{savedFilePath}}" ></image>
+  <view wx:if="{{boolean==true}}">
+    <image class="login-img" src="{{savedFilePath}}"></image>
+  </view>
+  <view wx:elif="{{boolean==false}}">
+    <image class="login-img" src="/imgs/loginLog.jpg"></image>
+  </view>
 </view>
 
-<view wx:elif="{{boolean==false}}">
-<image class="login-img" src="/imgs/loginLog.jpg"></image>
-</view>
+<view class="login-from">
+  <view class="sendmessage">
+      <view class="loginText">光交箱名:</view>
+      <input type="text" class="input-text" bindinput="nameInput" placeholder="请输入光交箱名" />
+  </view>
 
-</view>
+  <view class="sendmessage">
+    <button class="loginBtn" type="primary" size="mini" bindtap="photo">拍  照</button>
+    <input class="input-text2" confirm-type="done" placeholder="{{complete}}" disabled="true" />
+  </view>
 
-    <!--密码-->
-      <view class="section__title">光交箱名:</view>  
-<view class='form-group'>  
-      <input type="text" class="input-text" name="username" bindinput="phoneInput" 
-      placeholder="请输入光交箱名" />  
-            </view>    
+  <view class="sendmessage">
+    <button class="loginBtn" type="primary" size="mini" bindtap="scan">扫  码</button>
+    <input class="input-text2" placeholder="{{imeiText}}" disabled="true" />
+  </view>
 
-
-  <view class="login-from">  
-
-
-<view class="sendmessage">
-  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="photo">拍照上传</button>
-  <input  class="input-text2" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="{{complete}}" disabled="true"/>
-
-</view>
-
-<view class="sendmessage">
-  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="scan">扫码</button>
-  <input  class="input-text2" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="{{CodeResult}}" disabled="true"/>
-</view>
-
-<view class="sendmessage">
-  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="location">获取位置</button>
-  <input  class="input-text2" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="{{Locationresult}}" disabled="true"/>
-
-</view>
-
-<!--按钮-->
- <view class="SubmitBtnView">
-    <button class="SubmitBtn" bindtap="submit" type="warn" size="{{primarySize}}" >提交</button>
+  <view class="sendmessage">
+    <button class="loginBtn" type="primary" size="mini" bindtap="location">获取位置</button>
+    <input class="input-text2" placeholder="{{locationResult}}" disabled="true"/>
+  </view>
+  <view class="SubmitBtnView">
+    <button class="SubmitBtn" bindtap="submit" type="warn">提  交</button>
     <text>{{mytext}}</text>
   </view>
 </view>

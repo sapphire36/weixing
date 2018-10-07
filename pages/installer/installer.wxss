@@ -106,6 +106,12 @@ page{
   margin-top: 5px;
 }
 
+.loginText {
+  width: 50%;
+  margin-top: 5px;
+  text-align: center;
+}
+
 .SubmitBtnView {
   width: 100%;
   height: auto;

@@ -21,11 +21,10 @@
 
 <view class="section">
 <button bindtap="scan">扫码开锁</button>
-<button bindtap="openLock">Open锁</button>
-<button bindtap="closeLock">Close锁</button>
+<button bindtap="openLock">申请开锁</button>
 <button bindtap="setLoading">设备管理</button>
 <text>{{text.data}}</text>
 <text>{{mytext}}</text>
-<view>{{show}}</view>  
+<view>{{imeiText}}</view>  
 </view>
 </view>

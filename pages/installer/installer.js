@@ -1,23 +1,28 @@
 // pages/installer/installer.js
 var app = getApp()
-
-
 var initData = 'this is first line\nthis is second line'
 Page({
-
+  onLoad: function () {
+    var that = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        that.setData({
+          userInfo: res.data
+        })
+      }
+    })
+  },
   data: {
-    map_width: 380,
-    map_height: 380,
-    text: initData,
     boolean: false,
     savedFilePath: '',
     complete:'未上传图片',
-    CodeResult:'未扫码',
-    Locationresult:'未获取位置',
+    imeiText:'未扫码',
+    locationResult:'未获取位置',
     Boxname:'',
-    mytext:''
+    mytext:'',
+    userInfo:{}
   },
-
   mapViewTap: function () {
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度
@@ -36,7 +41,6 @@ Page({
       }
     })
   },
-
   photo: function () {
     var that = this
     wx.chooseImage({
@@ -47,12 +51,10 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var tempFilePaths = res.tempFilePaths
-
         that.setData({
           savedFilePath: tempFilePaths,
           complete:'上传图片成功',
           boolean: true
-          
         })
         //wx.setStorageSync('Rhine', tempFilePaths)
         wx.showToast({
@@ -79,14 +81,10 @@ Page({
             console.log('fail');
           },
         })
-        //上传图片
-
       }
     })
-
   },
-
-  phoneInput: function (e) {
+  nameInput: function (e) {
     this.setData({
       Boxname: e.detail.value
     })
@@ -106,9 +104,10 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        coderesult: that.data.CodeResult,
-        locationresult: that.data.Locationresult,
-        name: that.data.Boxname
+        IMEI : that.data.imeiText,
+        LOCATION : that.data.locationResult,
+        NAME : that.data.Boxname,
+        AREA: that.data.userInfo.areaname
       },
       success: function (res) {
         var temp = res.data.data;
@@ -143,19 +142,13 @@ Page({
   location:function(){
     var that = this
     wx.getLocation({
-    
       type: 'wgs84',
       success: function (res) {
         var latitude = res.latitude
         var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy
-
         that.setData({
-          Locationresult:latitude+','+longitude
+          locationResult: longitude + ',' + latitude
         })
-
-        console.log('纬度' + latitude + '经度' + longitude)
         wx.showToast({
           title: String('成功'),
           icon: 'success',
@@ -170,10 +163,8 @@ Page({
     wx.scanCode({
       success: (res) => {
         console.log('扫码结果' + res.result);
-        this.show = res.result;
         that.setData({
-          show: this.show.replace(/\s/g, ""),
-          CodeResult:this.show.replace(/\s/g, "")
+          imeiText: res.result.replace(/\s/g, "")
         })
         wx.showToast({
           title: '成功',
@@ -191,5 +182,5 @@ Page({
       complete: (res) => {
       }
     })
-  } 
+  }
 })
