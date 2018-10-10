@@ -65,7 +65,7 @@ Page({
   openLock: function (e) {
     var that = this;
     wx.request({
-      url: 'https://www.ayinshu.cn/GuangJX/api/operate/openLightbox',
+      url: 'https://www.ayinshu.cn/api/operate/openLightbox',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -74,6 +74,32 @@ Page({
         UNAME: that.data.userInfo.name,
         IMEI: that.data.imeiText,
         AREA: that.data.userInfo.areaname
+      },
+      success: function (res) {
+        console.log(res.data)
+        that.setData({
+          text: res.data
+        })
+      },
+      fail: function () {
+        that.setData({
+          text: "no"
+        })
+      }
+    })
+
+  },
+  closeLock: function (e) {
+    var that = this;
+    wx.request({
+      url: 'https://www.ayinshu.cn/api/operate/closeLightbox',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        UNAME: that.data.userInfo.name,
+        IMEI: that.data.imeiText,
       },
       success: function (res) {
         console.log(res.data)

@@ -1,8 +1,8 @@
 Page({
   data: {
     items: [
-      { name: '1', value: '安装人员' },
-      { name: '2', value: '施工人员', checked: 'true' }
+      { name: '1', value: '施工人员' },
+      { name: '2', value: '安装人员', checked: 'true' }
     ],
     username: '',
     passwd: '',
@@ -33,7 +33,7 @@ Page({
       })
     } else {
       wx.request({
-        url: 'https://www.ayinshu.cn/GuangJX/api/common/login',
+        url: 'https://www.ayinshu.cn/api/common/login',
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'

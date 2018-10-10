@@ -64,7 +64,7 @@ Page({
         })
         //上传图片
         wx.uploadFile({
-          url: 'https://www.ayinshu.cn/GuangJX/api/install/Uploadphoto',      //此处换上你的接口地址
+          url: 'https://www.ayinshu.cn/api/install/Uploadphoto',      //此处换上你的接口地址
           filePath: tempFilePaths,
           name: 'img',
           header: {
@@ -98,7 +98,7 @@ Page({
   submit:function(){
     var that=this;
     wx.request({
-      url: 'https://www.ayinshu.cn/GuangJX/api/install/installsubmit',
+      url: 'https://www.ayinshu.cn/api/install/installsubmit',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'

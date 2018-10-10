@@ -22,7 +22,7 @@
 <view class="section">
 <button bindtap="scan">扫码开锁</button>
 <button bindtap="openLock">申请开锁</button>
-<button bindtap="setLoading">设备管理</button>
+<button bindtap="closeLock">结束施工</button>
 <text>{{text.data}}</text>
 <text>{{mytext}}</text>
 <view>{{imeiText}}</view>  
