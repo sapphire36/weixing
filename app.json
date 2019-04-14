@@ -1,20 +1,18 @@
 {
   "pages":[
-    "pages/login/login",
-    "pages/operate/operate",
-    "pages/logs/logs",
-    "pages/installer/installer"
+    "pages/installer/installer",
+    "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#eee",
-    "navigationBarTitleText": "智能光交",
+    "navigationBarTitleText": "温度远传检测系统DEMO",
     "navigationBarTextStyle":"red"
   },
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/operate/operate",
+        "pagePath": "pages/installer/installer",
         "text": "首页",
         "iconPath": "imgs/1.png",
         "selectedIconPath": "imgs/2.png"

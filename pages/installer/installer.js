@@ -1,5 +1,8 @@
 // pages/installer/installer.js
 var app = getApp()
+var timer;
+var freshTime = 1000*10;
+var sendTime = 1000*30;
 var initData = 'this is first line\nthis is second line'
 Page({
   onLoad: function () {
@@ -11,124 +14,100 @@ Page({
           userInfo: res.data
         })
       }
-    })
+    });
+    timer = setTimeout(function () {
+      console.log("----Countdown----");
+      that.fetchData();
+    }, freshTime);
   },
   data: {
-    boolean: false,
-    savedFilePath: '',
-    complete:'未上传图片',
-    imeiText:'未扫码',
-    locationResult:'未获取位置',
-    Boxname:'',
-    mytext:'',
+    temptue: '21.2',
+    vol: '3.61',
+    lockStatus:false,
+    message: '就绪',
+    lockStr:'开',
+    sendTime:'',
     userInfo:{}
   },
-  mapViewTap: function () {
-    wx.getLocation({
-      type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-      success: function (res) {
-        console.log(res)
-        wx.openLocation({
-          latitude: res.latitude,
-          longitude: res.longitude,
-          scale: 28
-        })
-        wx.showToast({
-          title: res.latitude,
-          icon: 'success',
-          duration: 500
-        })
-      }
-    })
+  openLock: function (e) {
+    var that = this;
+    if (that.data.lockStatus == false) {
+      that.setData({
+        message: '设备锁处于开锁状态，请不要重复下发！'
+      })
+    } else {
+      that.setData({
+        message: '正在下发开锁指令，请耐心等待....'
+      })
+    }
+    timer = setTimeout(function () {
+      that.setData({
+        lockStr: '开'
+      })
+      that.setData({
+        lockStatus: false
+      })
+    }, sendTime);
   },
-  photo: function () {
-    var that = this
-    wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
-      
-      success: function (res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        var tempFilePaths = res.tempFilePaths
+  closeLock: function (e) {
+    var that = this;
+    if (that.data.lockStatus == true){
         that.setData({
-          savedFilePath: tempFilePaths,
-          complete:'上传图片成功',
-          boolean: true
+          message: '设备锁处于关锁状态，请不要重复下发！'
         })
-        //wx.setStorageSync('Rhine', tempFilePaths)
-        wx.showToast({
-          title: String('成功'),
-          icon: 'success',
-          duration: 2000
+    } else {
+        that.setData({
+          message: '正在下发关锁指令，请耐心等待....'
         })
-        //上传图片
-        wx.uploadFile({
-          url: 'https://www.ayinshu.cn/api/install/Uploadphoto',      //此处换上你的接口地址
-          filePath: tempFilePaths,
-          name: 'img',
-          header: {
-            "Content-Type": "multipart/form-data"
-          },
-          formData: {
-            'user': 'test'  //其他额外的formdata，可不写
-          },
-          success: function (res) {
-            var data = res.data;
-            console.log('上传成功+data');
-          },
-          fail: function (res) {
-            console.log('fail');
-          },
+    }
+    timer = setTimeout(function () {
+        that.setData({
+          lockStr: '关'
         })
-      }
-    })
+        that.setData({
+          lockStatus: true
+        })
+    }, sendTime);
   },
-  nameInput: function (e) {
-    this.setData({
-      Boxname: e.detail.value
-    })
-    console.log(e.detail.value)
+  fetchData: function (e) {
+    var that = this;
+    timer = setTimeout(function () {
+      console.log("----Countdown----");
+      that.doFetchData();
+      that.fetchData();
+    }, freshTime);
   },
-  loginoff: function (e) {
-    wx.navigateTo({
-      url: '/pages/login/login',
-    });
-  },
-  submit:function(){
-    var that=this;
+  doFetchData: function () {
+    var that = this;
     wx.request({
-      url: 'https://www.ayinshu.cn/api/install/installsubmit',
+      url: 'https://www.ayinshu.cn/api/thermal/getData',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        IMEI : that.data.imeiText,
-        LOCATION : that.data.locationResult,
-        NAME : that.data.Boxname,
-        AREA: that.data.userInfo.areaname
+        IMEI: '356566077983401'
       },
       success: function (res) {
-        var temp = res.data.data;
+        var temp = res.data;
         that.setData({
-          mytext: res.data.data
+          message: '获取设备数据成功,正在解析数据....'
         })
-        if (temp == '1') {
-          wx.showToast({
-            title: '提交成功',
-            icon: 'success',
-            duration: 500
+        if(temp.result == 'true'){
+          that.setData({
+            vol: temp.content.voltage
+          })
+          that.setData({
+            temptue: temp.content.temperature
+          })
+          var tt = new Date(parseInt(temp.content.addtime)).toLocaleString().replace(/:\d{1,2}$/, ' ')
+          that.setData({
+            sendTime: tt
           })
         }
-        else if (temp == '0') {
-          wx.showToast({
-            title: '提交失败',
-            icon: 'success',
-            duration: 500
-          })
-        }
-        console.log(res.data)
+        that.setData({
+          message: '数据解析成功'
+        })
       },
       fail: function () {
         wx.showToast({
@@ -136,50 +115,6 @@ Page({
           icon: 'success',
           duration: 500
         })
-      }
-    })
-  },
-  location:function(){
-    var that = this
-    wx.getLocation({
-      type: 'wgs84',
-      success: function (res) {
-        var latitude = res.latitude
-        var longitude = res.longitude
-        that.setData({
-          locationResult: longitude + ',' + latitude
-        })
-        wx.showToast({
-          title: String('成功'),
-          icon: 'success',
-          duration: 2000
-        })
-      }
-    })
-  },
-  scan: function () {
-    var that = this;
-    var show;
-    wx.scanCode({
-      success: (res) => {
-        console.log('扫码结果' + res.result);
-        that.setData({
-          imeiText: res.result.replace(/\s/g, "")
-        })
-        wx.showToast({
-          title: '成功',
-          icon: 'success',
-          duration: 2000
-        })
-      },
-      fail: (res) => {
-        wx.showToast({
-          title: '失败',
-          icon: 'success',
-          duration: 2000
-        })
-      },
-      complete: (res) => {
       }
     })
   }
